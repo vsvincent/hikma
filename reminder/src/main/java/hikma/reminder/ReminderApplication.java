@@ -1,12 +1,15 @@
 package hikma.reminder;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.Scanner;
 
-@SpringBootApplication
+import static hikma.reminder.console.Menu.printMenu;
+
 public class ReminderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReminderApplication.class, args);
+		Scanner scanner = new Scanner(System.in);
+		String[] options = {"Prayer", "Fasting", "Exit"};
+		int selection = printMenu(options, scanner);
+		//TODO use variable selection by implementing either reflection or a simple switch statement.
 	}
 }
