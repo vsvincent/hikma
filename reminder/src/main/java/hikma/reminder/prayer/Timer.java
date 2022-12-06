@@ -62,5 +62,6 @@ public class Timer {
     }
     private void timeUpNotification() {
         label.setText(timeUpMessage);
+        label.setForeground(Color.GREEN);
     }
 }
