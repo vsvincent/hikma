@@ -1,4 +1,4 @@
-package hikma.reminder.api.gui;
+package hikma.reminder.gui;
 
 import hikma.reminder.prayer.Timer;
 

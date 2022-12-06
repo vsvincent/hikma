@@ -1,6 +1,6 @@
 package hikma.reminder;
 
-import hikma.reminder.api.gui.MainMenu;
+import hikma.reminder.gui.MainMenu;
 
 public class ReminderApplication {
 
