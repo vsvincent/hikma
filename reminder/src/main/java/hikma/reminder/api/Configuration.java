@@ -1,16 +1,14 @@
 package hikma.reminder.api;
 
 public class Configuration {
-    private static String baseUrl = "http://api.aladhan.com/v1/";
-    public String getBaseUrl() {
-        return baseUrl;
+    static final String baseUrl = "http://api.aladhan.com/v1/";
+    static final String byAddress = "timingsByAddress";
+    static final String byCity = "timingsByCity";
+    public static String addQueryParameter(String parameterName, String parameterValue, Boolean firstParameter){
+        if(firstParameter){
+            return "?" + parameterName + "=" + parameterValue;
+        }
+        return "&" + parameterName + "=" + parameterValue;
     }
-    private static String byAddress = "timingsByAddress/:date_or_timestamp";
-    public String getByAddress() {
-        return byAddress;
-    }
-    private static String byCity = "timingsByCity/:date_or_timestamp";
-    public String getByCity() {
-        return byCity;
-    }
+
 }
