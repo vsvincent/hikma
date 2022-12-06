@@ -1,25 +1,29 @@
 package hikma.reminder.prayer;
 
+import java.awt.*;
 import java.time.ZonedDateTime;
-import java.util.Scanner;
 
-import static hikma.reminder.console.Input.getUserInputExitKey;
 
 public class Timer {
     private ZonedDateTime countdownTo;
-    public Timer (ZonedDateTime countdownTo){
+    private Label label;
+    private String timeUpMessage;
+    public Timer (ZonedDateTime countdownTo, Label label, String timeUpMessage){
         this.countdownTo = countdownTo;
+        this.label = label;
+        this.timeUpMessage = timeUpMessage;
     }
     private Thread timerThread = new Thread(new Runnable() {
         public void run() {
-            printCountdown(countdownTo);
+            printCountdown();
+            timeUpNotification();
         }});
 
     public Thread getTimerThread() {
         return timerThread;
     }
 
-    public void printCountdown(ZonedDateTime countdownTo){
+    private void printCountdown(){
         int charsWritten = 0;
         ZonedDateTime currentTime = ZonedDateTime.now();
         while (countdownTo.isAfter(currentTime.minusSeconds(1))) {
@@ -49,14 +53,14 @@ public class Timer {
                 hours = "0" + hours;
             }
 
-            String writeThis = hours + ":" + minutes + ":" + seconds;
+            String countdown = hours + ":" + minutes + ":" + seconds;
 
-            for (int i = 0; i < charsWritten; i++) {
-                System.out.print("\b");
-            }
-            System.out.println(writeThis);
-            charsWritten = writeThis.length();
+            label.setText(countdown);
+            charsWritten = countdown.length();
             currentTime = ZonedDateTime.now();
         }
+    }
+    private void timeUpNotification() {
+        label.setText(timeUpMessage);
     }
 }
