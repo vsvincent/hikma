@@ -31,7 +31,6 @@ on:
   push:
     branches:
       - main
-      - create_sonarCloudYaml
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -62,4 +61,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: cd ./reminder && chmod +x gradlew && gradlew init && gradlew buildEnvironment sonarqube --info
+        run: cd ./reminder && chmod +x gradle && gradle init && gradle build sonarqube --info
