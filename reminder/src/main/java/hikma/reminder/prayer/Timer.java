@@ -5,11 +5,12 @@ import java.time.ZonedDateTime;
 
 
 public class Timer {
-    private ZonedDateTime countdownTo;
+    //TODO replace with generic timer class using zoneddatetime instead of prayer time. Have PrayerTimer class extend.
+    private PrayerTime prayerTime;
     private Label label;
     private String timeUpMessage;
-    public Timer (ZonedDateTime countdownTo, Label label, String timeUpMessage){
-        this.countdownTo = countdownTo;
+    public Timer (PrayerTime prayerTime, Label label, String timeUpMessage){
+        this.prayerTime = prayerTime;
         this.label = label;
         this.timeUpMessage = timeUpMessage;
     }
@@ -18,15 +19,20 @@ public class Timer {
             printCountdown();
             timeUpNotification();
         }});
-
     public Thread getTimerThread() {
         return timerThread;
     }
 
     private void printCountdown(){
+        //TODO instead get next day's morning prayer
+        if (prayerTime == null){
+            label.setText("All of today's prayers are over");
+            return;
+        }
         int charsWritten = 0;
         ZonedDateTime currentTime = ZonedDateTime.now();
-        while (countdownTo.isAfter(currentTime.minusSeconds(1))) {
+        //TODO replace with generice zoneddatetime not from prayertime
+        while (prayerTime.getZonedDateTime().isAfter(currentTime.minusSeconds(1))) {
             try
             {
                 Thread.sleep(1000);
@@ -35,7 +41,8 @@ public class Timer {
             {
                 break;
             }
-            long remainingTime = countdownTo.toEpochSecond() - currentTime.toEpochSecond();
+            //TODO replace with generice zoneddatetime not from prayertime
+            long remainingTime = prayerTime.getZonedDateTime().toEpochSecond() - currentTime.toEpochSecond();
 
             String seconds = Integer.toString((int) (remainingTime % 60));
             String minutes = Integer.toString((int) ((remainingTime % 3600) / 60));

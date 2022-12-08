@@ -1,6 +1,7 @@
 package hikma.reminder.gui;
 
 import hikma.reminder.prayer.Timer;
+import hikma.reminder.prayer.Timing;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,6 +14,7 @@ public class MainMenu {
         private Label prayerTimerHeaderLabel;
         private Label prayerTimerLabel;
         private Label statusLabel;
+        private Timing prayerTiming;
         static final String FRAME_TITLE = "Hikma Religious Reminder";
         static final String PRAYER_TIMER_HEADER = "Time until Prayer: ";
 
@@ -65,7 +67,8 @@ public class MainMenu {
 
             final CheckboxMenuItem showPrayerTimer =
                     new CheckboxMenuItem("Show Prayer timer", true);
-            Timer timer = new Timer(ZonedDateTime.now().plusSeconds(10), prayerTimerLabel, "Time to pray");
+            prayerTiming = new Timing("Franz-Mehring Platz 3");
+            Timer timer = new Timer(prayerTiming.getNextPrayer(), prayerTimerLabel, "Time to pray");
             timer.getTimerThread().start();
             showPrayerTimer.addItemListener(new ItemListener() {
                 public void itemStateChanged(ItemEvent e) {
