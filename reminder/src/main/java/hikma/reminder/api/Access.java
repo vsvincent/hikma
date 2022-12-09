@@ -2,11 +2,11 @@ package hikma.reminder.api;
 
 import kong.unirest.*;
 import kong.unirest.json.JSONObject;
-public class Access {
-    public static JSONObject getJson(HttpRequest httpRequest){
-        return new JSONObject(httpRequest.asJson().getBody().toString());
-    }
-    public static JSONObject getTimingsByAddress(String address){
+
+import static hikma.reminder.util.JsonHelper.getJson;
+
+public class Access implements BaseAccess {
+    public JSONObject getTimingsByAddress(String address){
         return getJson(
                 Unirest.get("%s%s%s".formatted(
                 Configuration.baseUrl,
@@ -14,7 +14,7 @@ public class Access {
                 Configuration.addQueryParameter("address", address,true))))
                 .getJSONObject(Configuration.JSON_DATA_KEY);
     }
-    public static JSONObject getTimingsByCity(String country, String city){
+    public JSONObject getTimingsByCity(String country, String city){
         return getJson(
                 Unirest.get("%s%s%s%s".formatted(
                 Configuration.baseUrl,
