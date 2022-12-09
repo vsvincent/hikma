@@ -1,11 +1,14 @@
 package hikma.reminder.gui;
 
+import hikma.reminder.api.Access;
+import hikma.reminder.api.BaseAccess;
+import hikma.reminder.prayer.BaseTiming;
+import hikma.reminder.prayer.PrayerTimer;
 import hikma.reminder.prayer.Timer;
 import hikma.reminder.prayer.Timing;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.time.ZonedDateTime;
 
 public class MainMenu {
         private Frame frame;
@@ -14,7 +17,8 @@ public class MainMenu {
         private Label prayerTimerHeaderLabel;
         private Label prayerTimerLabel;
         private Label statusLabel;
-        private Timing prayerTiming;
+        private BaseTiming prayerTiming;
+        static final BaseAccess access = new Access();
         static final String FRAME_TITLE = "Hikma Religious Reminder";
         static final String PRAYER_TIMER_HEADER = "Time until Prayer: ";
 
@@ -67,16 +71,15 @@ public class MainMenu {
 
             final CheckboxMenuItem showPrayerTimer =
                     new CheckboxMenuItem("Show Prayer timer", true);
-            prayerTiming = new Timing("Franz-Mehring Platz 3");
-            Timer timer = new Timer(prayerTiming.getNextPrayer(), prayerTimerLabel, "Time to pray");
+            prayerTiming = new Timing(access, "Franz-Mehring Platz 3");
+            Timer timer = new PrayerTimer(prayerTiming.getNextPrayer(), prayerTimerLabel, "Time to pray");
             timer.getTimerThread().start();
-            showPrayerTimer.addItemListener(new ItemListener() {
-                public void itemStateChanged(ItemEvent e) {
-                    if(showPrayerTimer.getState()){
-                        frame.add(prayerTimerLabel);
-                    }else{
-                        frame.remove(prayerTimerLabel);
-                    }
+
+            showPrayerTimer.addItemListener(e -> {
+                if(showPrayerTimer.getState()){
+                    frame.add(prayerTimerLabel);
+                }else{
+                    frame.remove(prayerTimerLabel);
                 }
             });
 

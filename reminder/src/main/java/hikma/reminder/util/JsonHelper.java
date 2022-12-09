@@ -1,12 +1,16 @@
 package hikma.reminder.util;
 
 import hikma.reminder.api.Configuration;
+import kong.unirest.HttpRequest;
 import kong.unirest.json.JSONObject;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class JsonHelper {
+    public static JSONObject getJson(HttpRequest httpRequest){
+        return new JSONObject(httpRequest.asJson().getBody().toString());
+    }
     public static ZonedDateTime getZonedDateTimeFromEnumAndTimings(JSONObject timings,Enum enumerator){
         LocalTime time = LocalTime.parse(timings
                 .getJSONObject(Configuration.JSON_TIMING_KEY)

@@ -1,5 +1,6 @@
 package hikma.reminder.prayer;
 
+import hikma.reminder.api.BaseAccess;
 import hikma.reminder.util.JsonHelper;
 import hikma.reminder.util.TimeHelper;
 import kong.unirest.json.JSONObject;
@@ -9,18 +10,21 @@ import java.time.ZonedDateTime;
 
 import static hikma.reminder.api.Access.*;
 
-public class Timing {
-    private PrayerTime fajr;
-    private PrayerTime dhuhr;
-    private PrayerTime asr;
-    private PrayerTime maghrib;
-    private PrayerTime isha;
+public class Timing implements BaseTiming{
+    private BasePrayerTime fajr;
+    private BasePrayerTime dhuhr;
+    private BasePrayerTime asr;
+    private BasePrayerTime maghrib;
+    private BasePrayerTime isha;
 
-    public Timing(String address){
-        assignTimingsFromJson(getTimingsByAddress(address));
+    private BaseAccess access;
+
+    public Timing(BaseAccess access, String address){
+        this.access = access;
+        assignTimingsFromJson(access.getTimingsByAddress(address));
     }
     public Timing(String country, String city){
-        assignTimingsFromJson(getTimingsByCity(country, city));
+        assignTimingsFromJson(access.getTimingsByCity(country, city));
     }
 
     private void assignTimingsFromJson(JSONObject timings){
@@ -31,15 +35,15 @@ public class Timing {
         isha = new PrayerTime(Prayer.ISHA, JsonHelper.getZonedDateTimeFromEnumAndTimings(timings, Prayer.ISHA));
     }
 
-    public PrayerTime getNextPrayer()
+    public BasePrayerTime getNextPrayer()
     {
         ZonedDateTime currentTime = ZonedDateTime.now();
-        PrayerTime[] prayerTimes = getAllPrayers();
+        BasePrayerTime[] prayerTimes = getAllPrayers();
         boolean allDurationsNegative = true;
         //Establish parallel duration time array
         Duration[] durations = new Duration[prayerTimes.length];
         for (int i = 0; i < prayerTimes.length; i++) {
-            durations[i] = Duration.between(currentTime, prayerTimes[i].getZonedDateTime());
+            durations[i] = Duration.between(currentTime, prayerTimes[i].getTime());
             if (!durations[i].isNegative())
             {
                 allDurationsNegative = false;
@@ -52,8 +56,8 @@ public class Timing {
         }
         return prayerTimes[TimeHelper.getLowestDuration(durations)];
     }
-    public PrayerTime[] getAllPrayers(){
-        return new PrayerTime[]{
+    public BasePrayerTime[] getAllPrayers(){
+        return new BasePrayerTime[]{
                 fajr,
                 dhuhr,
                 asr,
@@ -61,23 +65,23 @@ public class Timing {
                 isha
         };
     }
-    public PrayerTime getFajr() {
+    public BasePrayerTime getFajr() {
         return fajr;
     }
 
-    public PrayerTime getDhuhr() {
+    public BasePrayerTime getDhuhr() {
         return dhuhr;
     }
 
-    public PrayerTime getAsr() {
+    public BasePrayerTime getAsr() {
         return asr;
     }
 
-    public PrayerTime getMaghrib() {
+    public BasePrayerTime getMaghrib() {
         return maghrib;
     }
 
-    public PrayerTime getIsha() {
+    public BasePrayerTime getIsha() {
         return isha;
     }
 }

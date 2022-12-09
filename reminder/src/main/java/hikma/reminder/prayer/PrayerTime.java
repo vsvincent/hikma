@@ -2,7 +2,7 @@ package hikma.reminder.prayer;
 
 import java.time.ZonedDateTime;
 
-public class PrayerTime {
+public class PrayerTime implements BasePrayerTime{
     private Prayer prayer;
     private ZonedDateTime zonedDateTime;
     public PrayerTime(Prayer prayer, ZonedDateTime zonedDateTime){
@@ -14,7 +14,7 @@ public class PrayerTime {
         return prayer;
     }
 
-    public ZonedDateTime getZonedDateTime() {
+    public ZonedDateTime getTime() {
         return zonedDateTime;
     }
 }
