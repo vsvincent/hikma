@@ -14,11 +14,10 @@ public class Timer {
         this.label = label;
         this.timeUpMessage = timeUpMessage;
     }
-    private Thread timerThread = new Thread(new Runnable() {
-        public void run() {
-            printCountdown();
-            timeUpNotification();
-        }});
+    private Thread timerThread = new Thread(() -> {
+        printCountdown();
+        timeUpNotification();
+    });
     public Thread getTimerThread() {
         return timerThread;
     }
