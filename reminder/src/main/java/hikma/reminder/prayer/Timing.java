@@ -1,8 +1,11 @@
 package hikma.reminder.prayer;
 
 import hikma.reminder.api.BaseAccess;
+import hikma.reminder.api.Configuration;
+import hikma.reminder.util.BaseTimeHelper;
 import hikma.reminder.util.JsonHelper;
 import hikma.reminder.util.TimeHelper;
+import kong.unirest.json.JSONException;
 import kong.unirest.json.JSONObject;
 
 import java.time.Duration;
@@ -18,16 +21,26 @@ public class Timing implements BaseTiming{
     private BasePrayerTime isha;
 
     private BaseAccess access;
+    private BaseTimeHelper timeHelper;
 
-    public Timing(BaseAccess access, String address){
+    public Timing(BaseAccess access, BaseTimeHelper timeHelper, String address){
         this.access = access;
+        this.timeHelper = timeHelper;
         assignTimingsFromJson(access.getTimingsByAddress(address));
     }
-    public Timing(String country, String city){
+    public Timing(BaseAccess access, BaseTimeHelper timeHelper, String country, String city){
+        this.access = access;
+        this.timeHelper = timeHelper;
         assignTimingsFromJson(access.getTimingsByCity(country, city));
     }
 
     private void assignTimingsFromJson(JSONObject timings){
+        try {
+            timings.get(Configuration.JSON_TIMING_KEY);
+        }
+        catch (Exception e){
+            throw new IllegalArgumentException("Invalid json field: " + Configuration.JSON_TIMING_KEY);
+        }
         fajr = new PrayerTime(Prayer.FAJR, JsonHelper.getZonedDateTimeFromEnumAndTimings(timings, Prayer.FAJR));
         dhuhr = new PrayerTime(Prayer.DHUHR, JsonHelper.getZonedDateTimeFromEnumAndTimings(timings, Prayer.DHUHR));
         asr = new PrayerTime(Prayer.ASR, JsonHelper.getZonedDateTimeFromEnumAndTimings(timings, Prayer.ASR));
@@ -37,7 +50,7 @@ public class Timing implements BaseTiming{
 
     public BasePrayerTime getNextPrayer()
     {
-        ZonedDateTime currentTime = ZonedDateTime.now();
+        ZonedDateTime currentTime = timeHelper.getCurrentTime();
         BasePrayerTime[] prayerTimes = getAllPrayers();
         boolean allDurationsNegative = true;
         //Establish parallel duration time array
