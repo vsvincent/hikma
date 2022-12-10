@@ -6,6 +6,8 @@ import hikma.reminder.prayer.BaseTiming;
 import hikma.reminder.prayer.PrayerTimer;
 import hikma.reminder.prayer.Timer;
 import hikma.reminder.prayer.Timing;
+import hikma.reminder.util.BaseTimeHelper;
+import hikma.reminder.util.TimeHelper;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,6 +21,7 @@ public class MainMenu {
         private Label statusLabel;
         private BaseTiming prayerTiming;
         static final BaseAccess access = new Access();
+        static final BaseTimeHelper timeHelper = new TimeHelper();
         static final String FRAME_TITLE = "Hikma Religious Reminder";
         static final String PRAYER_TIMER_HEADER = "Time until Prayer: ";
 
@@ -71,7 +74,7 @@ public class MainMenu {
 
             final CheckboxMenuItem showPrayerTimer =
                     new CheckboxMenuItem("Show Prayer timer", true);
-            prayerTiming = new Timing(access, "Franz-Mehring Platz 3");
+            prayerTiming = new Timing(access, timeHelper, "Franz-Mehring Platz 3");
             Timer timer = new PrayerTimer(prayerTiming.getNextPrayer(), prayerTimerLabel, "Time to pray");
             timer.getTimerThread().start();
 
