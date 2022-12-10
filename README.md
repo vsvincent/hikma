@@ -19,7 +19,7 @@ Religious reminder application written in Java using Intellij, builds managed by
 -[Clean Code Cheat Sheet](https://github.com/vsvincent/hikma/blob/develop/documentation/CleanCodeCheatSheet.drawio.pdf)
 ### Build Management
 ### Integrate Unit-Tests
-- In progress...
+- In progress... (See the [develop](https://github.com/vsvincent/hikma/tree/develop/reminder/src/test/java/hikma/reminder) branch)
 ### Continuous Delivery
 - [Sonarcloud integration](https://sonarcloud.io/project/overview?id=vsvincent_hikma)
 - [Example Sonarcloud workflow](https://github.com/vsvincent/hikma/actions/runs/3651159124/jobs/6168034715)
