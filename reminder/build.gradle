@@ -18,6 +18,7 @@ dependencies {
 	implementation 'com.konghq:unirest-java:3.14.0:standalone'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('org.junit.jupiter:junit-jupiter:5.9.0')
 }
 
 tasks.named('test') {
